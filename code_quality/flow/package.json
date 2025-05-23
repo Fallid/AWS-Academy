@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "flow": "flow",
+    "remove-types": "flow-remove-types src/ -d lib/",
+    "start": "npm run remove-types && node lib/index.mjs",
+    "build-and-start": "npm run remove-types && npm run start"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.272.0",
+    "flow-remove-types": "^2.272.0"
+  }
+}

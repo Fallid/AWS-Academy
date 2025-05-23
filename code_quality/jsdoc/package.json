@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "jsdoc": "^4.0.4"
+  },
+  "scripts": {
+    "start": "node src/jsdoc_example.js",
+    "doc": "jsdoc src/"
+  },
+  "name": "jsdoc",
+  "version": "1.0.0",
+  "description": "Code quality example with JSDoc",
+  "main": "jsdoc_example.js",
+  "author": "Ahmad Naufal",
+  "license": "MIT"
+}
