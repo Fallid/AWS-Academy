@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: server.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: server.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const http = require("http");
+
+/**
+ * @typedef {object} IncomingMessage
+ * @property {string} url - URL dari permintaan.
+ * @property {string} method - Metode HTTP dari permintaan (GET, POST, dll.).
+ * // Properti lain dari http.IncomingMessage bisa ditambahkan di sini jika diperlukan
+ */
+
+/**
+ * @typedef {object} ServerResponse
+ * @property {function(string, string): void} setHeader - Fungsi untuk mengatur header respons.
+ * @property {number} statusCode - Kode status HTTP respons.
+ * @property {string} statusMessage - Pesan status HTTP respons.
+ * @property {function(string): void} end - Fungsi untuk mengakhiri respons dan mengirimkan data.
+ * // Properti lain dari http.ServerResponse bisa ditambahkan di sini jika diperlukan
+ */
+
+/**
+ * Fungsi `requestListener` adalah handler utama untuk setiap permintaan HTTP yang masuk ke server.
+ * Fungsi ini menangani berbagai URL dan metode HTTP, mengembalikan konten HTML yang berbeda
+ * atau pesan kesalahan berdasarkan permintaan.
+ *
+ * @param {IncomingMessage} request - Objek permintaan HTTP yang berisi informasi terkait permintaan klien,
+ * seperti metode HTTP dan URL.
+ * @param {ServerResponse} response - Objek respons HTTP yang digunakan untuk menanggapi permintaan,
+ * termasuk mengatur header, kode status, dan mengirimkan isi respons kembali ke klien.
+ */
+const requestListener = (request, response) => {
+  const { method, url } = request;
+
+  // Mengatur header respons default
+  response.setHeader("Content-Type", "text/html");
+  response.statusCode = 200;
+  response.statusMessage = "OK";
+
+  // --- Penanganan Rute ---
+  if (url === "/") {
+    // Rute utama (homepage)
+    if (method === "GET") {
+      response.end("&lt;h1>Ini adalah homepage&lt;/h1>");
+    } else {
+      // Menangani metode HTTP yang tidak diizinkan untuk homepage
+      // Catatan: Seharusnya 405 Method Not Allowed, bukan 404
+      response.statusCode = 404;
+      response.statusMessage = "User is not found"; // Pesan status kurang tepat
+      response.end(
+        `&lt;h1>Halaman tidak dapat diakses dengan ${method} request&lt;/h1>`
+      );
+    }
+  } else if (url === "/about") {
+    // Rute '/about'
+    if (method === "GET") {
+      response.end("&lt;h1>Halo! Ini adalah halaman about!&lt;/h1>");
+    } else if (method === "POST") {
+      // Menangani permintaan POST untuk rute '/about', membaca body permintaan
+      let body = [];
+
+      // Menerima data chunk dari permintaan
+      request.on("data", (chunk) => {
+        body.push(chunk);
+      });
+
+      // Setelah semua data diterima, proses body
+      request.on("end", () => {
+        body = Buffer.concat(body).toString();
+        try {
+          // Mem-parsing body sebagai JSON dan mengambil properti 'name'
+          const { name } = JSON.parse(body);
+          response.statusCode = 200;
+          response.end(`&lt;h1>Halo, ${name}! Ini adalah halaman about&lt;/h1>`);
+        } catch (error) {
+          // Menangani kesalahan jika body permintaan bukan JSON yang valid
+          response.statusCode = 400; // Bad Request
+          response.statusMessage = "Invalid JSON body";
+          response.end("&lt;h1>Format body JSON tidak valid&lt;/h1>");
+        }
+      });
+    } else {
+      // Menangani metode HTTP yang tidak diizinkan untuk rute '/about'
+      // Catatan: Seharusnya 405 Method Not Allowed, bukan 404
+      response.statusCode = 404;
+      response.statusMessage = "User is not found"; // Pesan status kurang tepat
+      response.end(
+        `&lt;h1>Halaman tidak dapat diakses dengan ${method} request&lt;/h1>`
+      );
+    }
+  } else {
+    // Menangani rute yang tidak ditemukan (404 Not Found)
+    response.statusCode = 404;
+    response.statusMessage = "User is not found"; // Pesan status kurang tepat
+    response.end("Halaman tidak ditemukan!");
+  }
+};
+
+/**
+ * Membuat instance server HTTP menggunakan `requestListener` sebagai fungsi penangan permintaan.
+ * Objek `server` ini akan mendengarkan permintaan masuk dan meneruskannya ke `requestListener`.
+ *
+ * @type {http.Server}
+ */
+const server = http.createServer(requestListener);
+
+/**
+ * Nomor port tempat server akan mendengarkan permintaan masuk.
+ * @type {number}
+ */
+const port = 5000;
+
+/**
+ * Hostname atau alamat IP tempat server akan mendengarkan permintaan masuk.
+ * Dalam kasus ini, server akan dapat diakses dari localhost (komputer yang sama).
+ * @type {string}
+ */
+const host = "localhost";
+
+/**
+ * Memulai server HTTP untuk mendengarkan pada port dan host yang telah ditentukan.
+ * Ketika server berhasil berjalan dan mulai mendengarkan, sebuah pesan akan dicetak ke konsol
+ * yang menunjukkan alamat di mana server dapat diakses.
+ */
+server.listen(port, host, () => {
+  console.log(`Server berjalan pada http://${host}:${port}`);
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#host">host</a></li><li><a href="global.html#port">port</a></li><li><a href="global.html#requestListener">requestListener</a></li><li><a href="global.html#server">server</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat May 31 2025 03:08:54 GMT+0700 (Western Indonesia Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

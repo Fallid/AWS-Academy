@@ -1,13 +1,21 @@
 {
   "name": "be-nodejs",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "doc": "jsdoc src/ ",
+    "web": "open-cli out/index.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jsdoc": "^4.0.4",
+    "nodemon": "^3.1.10",
+    "open-cli": "^8.0.0"
+  }
 }
