@@ -1,0 +1,24 @@
+{
+  "name": "rabbitmq-basic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "producer": "node src/producer.js",
+    "consumer": "node src/consumer.js"
+  },
+  "private": true,
+  "keywords": [],
+  "author": "Ahmad Naufal",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.9"
+  }
+}
