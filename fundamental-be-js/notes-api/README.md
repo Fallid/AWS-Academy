@@ -112,7 +112,7 @@ npm run migrate
 - Standar: AirBnB Base, lihat `.eslintrc.json`
 
 ## Lisensi
-Proyek ini menggunakan lisensi ISC.
+Proyek ini menggunakan lisensi [MIT](./LICENSE).
 
 ---
 
