@@ -1,0 +1,19 @@
+{
+  "name": "multipart-hapi-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "Ahmad Naufal",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@hapi/hapi": "^21.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
